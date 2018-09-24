@@ -232,6 +232,8 @@ def fmask_cogtif(fname, out_fname):
                "PREDICTOR=2",
                "-co",
                "COPY_SRC_OVERVIEWS=YES",
+               "-co",
+               "TILED=YES",
                fname,
                out_fname]
 
