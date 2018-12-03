@@ -191,7 +191,11 @@ class GverifyTask(luigi.Task):
                               resampling=acq_info.preferred_resampling_method)
         except (ValueError, FileNotFoundError, CommandError) as ve:
             error_msg = str(ve)
-            ERROR_LOGGER.error('gverify was not executed because:\n {}'.format(error_msg))
+            ERROR_LOGGER.error(
+                'gverify was not executed because:\n {}'.format(error_msg),
+                level1=self.level1,
+                granule=self.granule
+            )
         finally:
             # Write out runtime data to be processed by the gqa task
             run_args = {
@@ -306,7 +310,9 @@ class GQATask(luigi.Task):
         except (StopIteration, FileNotFoundError) as _:
             ERROR_LOGGER.error(
                 "Gverify results file contains no tabulated data; {}".format(
-                    self.input()['results'].path)
+                    self.input()['results'].path),
+                level1=self.level1,
+                granule=self.granule
             )
 
             _LOG.debug('Defaulting to NaN for the residual values.')
